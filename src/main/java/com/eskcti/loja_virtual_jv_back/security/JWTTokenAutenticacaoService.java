@@ -7,7 +7,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -23,10 +22,10 @@ import java.util.Date;
 @Service
 @Component
 public class JWTTokenAutenticacaoService {
-	
 
-	/*Token de validade de 11 dias*/
-	private static final long EXPIRATION_TIME = 959990000;
+	/*                                          seg  min  hor  dia */
+	/*Token de validade de 11 dias              60 * 60 * 24 * 11  */
+	private static final long EXPIRATION_TIME = 60 * 60 * 24 * 11 * 1000;
 	
 	/*Chave de senha para juntar com o JWT*/
 	private static final String SECRET = "ss/-*-*sds565dsd-s/d-s*dsds";
@@ -35,10 +34,8 @@ public class JWTTokenAutenticacaoService {
 	
 	private static final String HEADER_STRING = "Authorization";
 
-	@Autowired
-	private UsuarioRepository usuarioRepository;
 
-	/*Gera o token e da a responsta para o cliente o com JWT*/
+    /*Gera o token e da a responsta para o cliente o com JWT*/
 	public void addAuthentication(HttpServletResponse response, String username) throws Exception {
 		
 		/*Montagem do Token*/
@@ -81,8 +78,10 @@ public class JWTTokenAutenticacaoService {
 			
 			if (user != null) {
 
-				Usuario usuario = usuarioRepository.findUserByLogin(user);
-				
+				Usuario usuario = ApplicationContextLoad.
+						getApplicationContext().
+						getBean(UsuarioRepository.class).findUserByLogin(user);
+
 				if (usuario != null) {
 					return new UsernamePasswordAuthenticationToken(
 							usuario.getLogin(),
