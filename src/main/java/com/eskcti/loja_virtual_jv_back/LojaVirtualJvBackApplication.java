@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableAsync
 @EnableScheduling
 @EntityScan(basePackages = "com.eskcti.loja_virtual_jv_back.models")
-@ComponentScan(basePackages = {"com.eskcti.loja_virtual_jv_back.*"})
+@ComponentScan(basePackages = {"com.eskcti.*"})
 @EnableJpaRepositories(basePackages = {"com.eskcti.loja_virtual_jv_back.repositories"})
 @EnableTransactionManagement
 @EnableWebMvc
